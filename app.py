@@ -3,16 +3,16 @@ from lti import ToolProvider
 
 app = Flask(__name__)
 
-# Tus claves deben coincidir con las de Schoology
 LTI_CONSUMER_KEY = "test"
 LTI_SHARED_SECRET = "test"
 
 @app.route("/", methods=["GET", "POST"])
 def lti_entry():
     if request.method == "POST":
-        # Verifica la autenticidad del request LTI
-        tool_provider = ToolProvider.from_flask_request(
-            request,
+        tool_provider = ToolProvider.from_request(
+            request.method,
+            request.url,
+            request.form,
             consumers={LTI_CONSUMER_KEY: LTI_SHARED_SECRET}
         )
 
